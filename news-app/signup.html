@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f2f5;
+        }
+
+        .signup-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 350px;
+        }
+
+        .signup-container h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #666;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .signup-btn {
+            width: 100%;
+            padding: 10px;
+            background-color: #1877f2;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .signup-btn:hover {
+            background-color: #166fe5;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .login-link a {
+            color: #1877f2;
+            text-decoration: none;
+        }
+
+        .terms {
+            font-size: 12px;
+            color: #777;
+            text-align: center;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="signup-container">
+        <h2>Create a New Account</h2>
+        <form id="signupForm">
+            <div class="form-group">
+                <label for="fullname">Full Name</label>
+                <input type="text" id="fullname" name="fullname" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit" class="signup-btn">Sign Up</button>
+        </form>
+        <div class="terms">
+            By clicking Sign Up, you agree to our Terms, Data Policy and Cookies Policy.
+        </div>
+        <div class="login-link">
+            <p>Already have an account? <a href="#" onclick="navigateLogin()">Log in</a></p>
+        </div>
+    </div>
+    <script>
+        // Navigate to login page
+        function navigateLogin() {
+            console.log("Navigating to login page...");
+            window.location.href = "login.html";
+        }
+
+        // Get form values on submit
+        document.getElementById("signupForm").addEventListener("submit",async function(event) {
+            event.preventDefault(); // Prevent form submission
+
+            const fullname = document.getElementById("fullname").value;
+            console.log("Full Name:", fullname);
+            const email = document.getElementById("email").value;
+            console.log("Email:", email);
+            const password = document.getElementById("password").value;
+            console.log("Password:", password);
+
+            try{
+                const response = await fetch("http://192.168.0.170:8000/api/register", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ Fullname: fullname, email: email, password: password }),
+                });
+
+                const result = await response.text();
+                console.log(result);
+                if(response.ok){
+                    window.location.href="index.html";
+                }
+
+            }catch(error){
+                console.log("error : ",error)
+            }
+        });
+    </script>
+</body>
+
+</html>
